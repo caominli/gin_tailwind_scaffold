@@ -1,0 +1,237 @@
+{{template "header.html" . }}
+<div v-html="msg" @vue:mounted="mounted"></div>
+<div class="bg-white dark:bg-slate-900 min-h-lvh">
+  <div class="mx-auto max-w-7xl">
+    <!-- 主要框架开始 -->
+    <main class="sm:px-12 py-6 space-x-3 text-gray-500 dark:text-slate-200">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 mx-auto">
+
+        <div class="mx-auto md:py-20 px-8 sm:px-12 lg:px-20 xl:px-24 ">
+          <div class="mx-auto w-full max-w-sm lg:w-96">
+            <h2 class="mt-8 text-2xl font-bold leading-9 tracking-tight">一个超酷的网站</h2>
+            <p class="mt-2 text-base leading-6">
+              把加密货币融入您的生活,使用BTC或者USDT...等代币满足您的消费需求，使用过的用户都很喜欢它！
+            </p>
+          </div>
+        </div>
+
+        <div class="flex justify-center px-4 py-12 sm:px-6 lg:px-20 xl:px-24">
+          <div class="mx-auto w-full max-w-sm lg:w-96">
+
+            <h2 class="mt-8 text-xl font-bold leading-9 tracking-tight">现在开始登记</h2>
+
+            <div class="mt-6">
+              <form method="POST" class="space-y-6" action="#" v-on:submit="getcode">
+                <div>
+                  <label for="email" class="block text-sm font-medium leading-6">Email address</label>
+                  <div class="mt-2">
+                    <input v-model="emailText" name="email" type="email" autocomplete="email" required
+                      class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 bg-transparent ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                  </div>
+                </div>
+                <button type="submit" id="getcodebutton" hidden></button>
+              </form>
+
+              <form method="POST" class="space-y-6 mt-6" v-on:submit="checkPasswords">
+                <div>
+                  <label for="email" class="block text-sm font-medium leading-6">验证码</label>
+                  <div class="flex -space-x-px mt-2">
+                    <div class="w-2/3 min-w-0">
+                      <input type="text" name="code" required
+                        class="relative block w-full rounded-none rounded-l-md border-0 bg-transparent py-1.5 ring-1 ring-inset ring-gray-300 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                    <div class="min-w-0 flex-1">
+
+                      <button @click="getcodebut" type="button" :disabled="counting"
+                        class="relative w-full rounded-r-md px-3 py-2 text-sm bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 ring-1 ring-inset ring-gray-300">
+                        ${codeButText}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <input v-model="emailText" name="email" type="email" required hidden>
+
+                <div>
+                  <label for="password" class="block text-sm font-medium leading-6">Password</label>
+                  <div class="relative mt-2 rounded-md z-0">
+                    <input :type="showPassword ? 'text' : 'password'" v-model="password" required name="password"
+                      class="block w-full rounded-md border-0 py-1.5 bg-transparent ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    <button type="button" @click="showPassword = !showPassword"
+                      class="absolute inset-y-0 right-2 flex items-center">
+                      <svg v-show="!showPassword" class="h-4 w-4" viewBox="0 0 512 512" fill="currentColor">
+                        <circle cx="256" cy="256" r="64" fill="currentColor"></circle>
+                        <path
+                          d="M394.82 141.18C351.1 111.2 304.31 96 255.76 96c-43.69 0-86.28 13-126.59 38.48C88.52 160.23 48.67 207 16 256c26.42 44 62.56 89.24 100.2 115.18C159.38 400.92 206.33 416 255.76 416c49 0 95.85-15.07 139.3-44.79C433.31 345 469.71 299.82 496 256c-26.38-43.43-62.9-88.56-101.18-114.82zM256 352a96 96 0 1 1 96-96a96.11 96.11 0 0 1-96 96z"
+                          clip-rule="evenodd" />
+                      </svg>
+                      <svg v-show="showPassword" class="h-4 w-4" viewBox="0 0 640 512" fill="currentColor">
+                        <path
+                          d="M320 400c-75.85 0-137.25-58.71-142.9-133.11L72.2 185.82c-13.79 17.3-26.48 35.59-36.72 55.59a32.35 32.35 0 0 0 0 29.19C89.71 376.41 197.07 448 320 448c26.91 0 52.87-4 77.89-10.46L346 397.39a144.13 144.13 0 0 1-26 2.61zm313.82 58.1l-110.55-85.44a331.25 331.25 0 0 0 81.25-102.07a32.35 32.35 0 0 0 0-29.19C550.29 135.59 442.93 64 320 64a308.15 308.15 0 0 0-147.32 37.7L45.46 3.37A16 16 0 0 0 23 6.18L3.37 31.45A16 16 0 0 0 6.18 53.9l588.36 454.73a16 16 0 0 0 22.46-2.81l19.64-25.27a16 16 0 0 0-2.82-22.45zm-183.72-142l-39.3-30.38A94.75 94.75 0 0 0 416 256a94.76 94.76 0 0 0-121.31-92.21A47.65 47.65 0 0 1 304 192a46.64 46.64 0 0 1-1.54 10l-73.61-56.89A142.31 142.31 0 0 1 320 112a143.92 143.92 0 0 1 144 144c0 21.63-5.29 41.79-13.9 60.11z"
+                          clip-rule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="confirm password" class="block text-sm font-medium leading-6">重复密码</label>
+                  <div class="relative z-0 mt-2 rounded-md">
+                    <input :type="showPassword2 ? 'text' : 'password'" v-model="password2" required name="cpassword"
+                      class="block w-full rounded-md border-0 py-1.5 bg-transparent ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    <button type="button" @click="showPassword2 = !showPassword2"
+                      class="absolute inset-y-0 right-2 flex items-center">
+                      <svg v-show="!showPassword2" class="h-4 w-4" viewBox="0 0 512 512" fill="currentColor">
+                        <circle cx="256" cy="256" r="64" fill="currentColor"></circle>
+                        <path
+                          d="M394.82 141.18C351.1 111.2 304.31 96 255.76 96c-43.69 0-86.28 13-126.59 38.48C88.52 160.23 48.67 207 16 256c26.42 44 62.56 89.24 100.2 115.18C159.38 400.92 206.33 416 255.76 416c49 0 95.85-15.07 139.3-44.79C433.31 345 469.71 299.82 496 256c-26.38-43.43-62.9-88.56-101.18-114.82zM256 352a96 96 0 1 1 96-96a96.11 96.11 0 0 1-96 96z"
+                          clip-rule="evenodd" />
+                      </svg>
+                      <svg v-show="showPassword2" class="h-4 w-4" viewBox="0 0 640 512" fill="currentColor">
+                        <path
+                          d="M320 400c-75.85 0-137.25-58.71-142.9-133.11L72.2 185.82c-13.79 17.3-26.48 35.59-36.72 55.59a32.35 32.35 0 0 0 0 29.19C89.71 376.41 197.07 448 320 448c26.91 0 52.87-4 77.89-10.46L346 397.39a144.13 144.13 0 0 1-26 2.61zm313.82 58.1l-110.55-85.44a331.25 331.25 0 0 0 81.25-102.07a32.35 32.35 0 0 0 0-29.19C550.29 135.59 442.93 64 320 64a308.15 308.15 0 0 0-147.32 37.7L45.46 3.37A16 16 0 0 0 23 6.18L3.37 31.45A16 16 0 0 0 6.18 53.9l588.36 454.73a16 16 0 0 0 22.46-2.81l19.64-25.27a16 16 0 0 0-2.82-22.45zm-183.72-142l-39.3-30.38A94.75 94.75 0 0 0 416 256a94.76 94.76 0 0 0-121.31-92.21A47.65 47.65 0 0 1 304 192a46.64 46.64 0 0 1-1.54 10l-73.61-56.89A142.31 142.31 0 0 1 320 112a143.92 143.92 0 0 1 144 144c0 21.63-5.29 41.79-13.9 60.11z"
+                          clip-rule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <input type="checkbox" required
+                      class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                    <label for="remember-me" class="ml-3 block text-sm leading-6">我已阅读并同意<a href="#"
+                        class="text-indigo-600 font-semibold">用户使用协议</a></label>
+                  </div>
+                </div>
+
+                <div>
+                  <button type="submit"
+                    class="flex w-full justify-center rounded-md px-3 py-1.5 text-sm bg-gray-900 text-white dark:bg-white/10 hover:bg-gray-700 dark:hover:bg-white/20 font-semibold leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500">注册
+                  </button>
+
+                </div>
+
+                <div>
+                  <div class="text-sm leading-6">
+                    已经是我们用户？<a href="/login" class="text-indigo-600 font-semibold">去登陆</a>
+                  </div>
+                </div>
+              </form>
+
+
+
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+
+    </main>
+    <!-- 主框架结束 -->
+  </div>
+
+
+
+
+
+
+
+
+
+</div>
+{{template "footer.html" .}}
+<script src="/static/index.js"></script>
+<script src="/static/theme.js"></script>
+<script src="/static/axios.min.js"></script>
+<script>
+  getcodebutton = document.querySelector("#getcodebutton");
+
+  PetiteVue.createApp({
+    $delimiters: ['${', '}'],
+    isDark: theme(),
+    menuOpen: false,
+    langOpen: false,
+    isAcc: false,
+    openDark() {
+      this.isDark = !this.isDark;
+      if (this.isDark) {
+        document.documentElement.classList.add('dark'); //向html添加dark样式
+        localStorage.setItem('theme', 'dark');  //本地写入主题
+      } else {
+        document.documentElement.classList.remove('dark');  //删除dark样式
+        localStorage.setItem('theme', 'light');
+      }
+    },
+
+    //验证码逻辑
+    emailText: null,
+    codeButText: "获取验证码", //按钮名称
+    counting: false, //按钮是否灰色
+    seconds: null, //倒计时间
+    //获取代码按钮点击,由显性按钮事件控制
+    getcodebut() {
+      getcodebutton.click(); //隐性按钮点击
+    },
+
+    //获取邮箱表单提交事件
+    getcode(event) {
+      event.preventDefault(); //拦截表单提交
+
+
+      // 发送 POST 请求
+      axios.post('/api/getcode', {
+        email: this.emailText,
+      })
+        .then(() => {
+          Message(this, "已为您的邮箱发送验证码,有效时间20分钟", 3);
+          this.counting = true,//按钮灰色
+            this.seconds = 120; // 倒计时秒数
+          // 开始倒计时
+          const timer = setInterval(() => {
+            this.seconds--;
+            if (this.seconds > 0) {
+              this.codeButText = `${this.seconds}s后可点击`;
+            } else {
+              clearInterval(timer); // 停止定时器
+              this.counting = false; // 设置倒计时状态为 false
+              this.codeButText = '获取验证码'; // 恢复按钮文本
+            }
+          }, 1000);
+
+        })
+        .catch(error => {
+          Message(this, "获取验证码失败:" + error.response.data.msg, "1");
+        });
+    },
+
+    //密码逻辑开始
+    showPassword: false, //明文显示密码图标状态变量
+    showPassword2: false, //明文显示密码2图标状态变量
+    password: null,  //密码区绑定变量，因为要判断，所以
+    password2: null, //重复密码区绑定变量
+
+
+    //表单提交时运行事件
+    msg: null, //通知消息初始化
+    checkPasswords(event) {
+      if (this.password !== this.password2) {
+        event.preventDefault(); //阻止提交表单
+        Message(this, "两次密码输入不一致，请检查", "2");
+      }
+    },
+
+    //初始化完成后立即执行，需要在任意元素中使用@vue:mounted="mounted"
+    mounted() {
+      {{ if .msg}}
+      Message(this, "{{index .msg 0}}", "{{ index .msg 1}}");
+      {{ end }}
+
+    },
+
+  }).mount();
+
+</script>
+{{template "bottom.html"}}

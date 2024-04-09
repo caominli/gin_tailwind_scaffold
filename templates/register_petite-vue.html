@@ -1,0 +1,230 @@
+{{template "header.html" . }}
+
+<div v-if="isErr" aria-live="assertive" class="pointer-events-none fixed inset-0 flex px-4 py-6 items-start sm:p-6 z-10">
+  <div class="flex w-full flex-col items-center space-y-4 sm:items-end">
+    <div class="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+      <div class="p-4">
+        <div class="flex items-start">
+          <div class="flex-shrink-0">
+            <svg class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="h-6 w-6 text-rose-600">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3 w-0 flex-1 pt-0.5">
+            <p class="text-sm font-medium text-gray-900">两次密码输入错误</p>
+          </div>
+          <div class="ml-4 flex flex-shrink-0">
+            <button @click="isErr = false" type="button" class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+              <span class="sr-only">Close</span>
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+
+
+<div class="bg-white dark:bg-slate-900 min-h-lvh">
+  <div class="mx-auto max-w-7xl">
+    <!-- 主要框架开始 -->
+    <main class="sm:px-12 py-6 space-x-3 text-gray-500 dark:text-slate-200">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 mx-auto">
+
+        <div class="mx-auto md:py-20 px-8 sm:px-12 lg:px-20 xl:px-24 ">
+          <div class="mx-auto w-full max-w-sm lg:w-96">
+            <h2 class="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">一个超酷的网站</h2>
+            <p class="mt-2 text-base leading-6 text-gray-500">
+              把加密货币融入您的生活,使用BTC或者USDT...等代币满足您的消费需求，使用过的用户都很喜欢它！
+            </p>
+          </div>
+        </div>
+
+        <div class="flex justify-center px-4 py-12 sm:px-6 lg:px-20 xl:px-24">
+          <div class="mx-auto w-full max-w-sm lg:w-96">
+           
+            <h2 class="mt-8 text-xl font-bold leading-9 tracking-tight text-gray-900">现在开始登记</h2>
+          
+            <div class="mt-6">
+              
+                <form method="POST" class="space-y-6" v-on:submit="checkPasswords">
+                  <div>
+                    <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
+                    <div class="mt-2">
+                      <input name="email" type="email" autocomplete="email" required
+                        class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                  </div>
+
+                  <div>
+                    <label for="email" class="block text-sm font-medium leading-6 text-gray-900">验证码</label>
+                    <div class="mt-2">
+                      <input name="email" type="email" autocomplete="email" required
+                        class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                  </div>
+
+                  <div>
+                    <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                    <div class="relative mt-2 rounded-md z-0">
+                      <input :type="showPassword ? 'text' : 'password'" v-model="password" required name="password" class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                      <button type="button" @click="showPassword = !showPassword" class="absolute inset-y-0 right-2 flex items-center">
+                        <svg v-show="!showPassword" class="h-4 w-4" viewBox="0 0 512 512" fill="currentColor">
+                          <circle cx="256" cy="256" r="64" fill="currentColor"></circle><path
+                            d="M394.82 141.18C351.1 111.2 304.31 96 255.76 96c-43.69 0-86.28 13-126.59 38.48C88.52 160.23 48.67 207 16 256c26.42 44 62.56 89.24 100.2 115.18C159.38 400.92 206.33 416 255.76 416c49 0 95.85-15.07 139.3-44.79C433.31 345 469.71 299.82 496 256c-26.38-43.43-62.9-88.56-101.18-114.82zM256 352a96 96 0 1 1 96-96a96.11 96.11 0 0 1-96 96z"
+                            clip-rule="evenodd" />
+                        </svg>
+                        <svg v-show="showPassword" class="h-4 w-4" viewBox="0 0 640 512" fill="currentColor">
+                          <path
+                            d="M320 400c-75.85 0-137.25-58.71-142.9-133.11L72.2 185.82c-13.79 17.3-26.48 35.59-36.72 55.59a32.35 32.35 0 0 0 0 29.19C89.71 376.41 197.07 448 320 448c26.91 0 52.87-4 77.89-10.46L346 397.39a144.13 144.13 0 0 1-26 2.61zm313.82 58.1l-110.55-85.44a331.25 331.25 0 0 0 81.25-102.07a32.35 32.35 0 0 0 0-29.19C550.29 135.59 442.93 64 320 64a308.15 308.15 0 0 0-147.32 37.7L45.46 3.37A16 16 0 0 0 23 6.18L3.37 31.45A16 16 0 0 0 6.18 53.9l588.36 454.73a16 16 0 0 0 22.46-2.81l19.64-25.27a16 16 0 0 0-2.82-22.45zm-183.72-142l-39.3-30.38A94.75 94.75 0 0 0 416 256a94.76 94.76 0 0 0-121.31-92.21A47.65 47.65 0 0 1 304 192a46.64 46.64 0 0 1-1.54 10l-73.61-56.89A142.31 142.31 0 0 1 320 112a143.92 143.92 0 0 1 144 144c0 21.63-5.29 41.79-13.9 60.11z"
+                            clip-rule="evenodd" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label for="confirm password" class="block text-sm font-medium leading-6 text-gray-900">重复密码</label>
+                    <div class="relative z-0 mt-2 rounded-md">
+                      <input :type="showPassword2 ? 'text' : 'password'" v-model="password2" required name="cpassword" class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                      <button type="button" @click="showPassword2 = !showPassword2" class="absolute inset-y-0 right-2 flex items-center">
+                        <svg v-show="!showPassword2" class="h-4 w-4" viewBox="0 0 512 512" fill="currentColor">
+                          <circle cx="256" cy="256" r="64" fill="currentColor"></circle><path
+                            d="M394.82 141.18C351.1 111.2 304.31 96 255.76 96c-43.69 0-86.28 13-126.59 38.48C88.52 160.23 48.67 207 16 256c26.42 44 62.56 89.24 100.2 115.18C159.38 400.92 206.33 416 255.76 416c49 0 95.85-15.07 139.3-44.79C433.31 345 469.71 299.82 496 256c-26.38-43.43-62.9-88.56-101.18-114.82zM256 352a96 96 0 1 1 96-96a96.11 96.11 0 0 1-96 96z"
+                            clip-rule="evenodd" />
+                        </svg>
+                        <svg v-show="showPassword2" class="h-4 w-4" viewBox="0 0 640 512" fill="currentColor">
+                          <path
+                            d="M320 400c-75.85 0-137.25-58.71-142.9-133.11L72.2 185.82c-13.79 17.3-26.48 35.59-36.72 55.59a32.35 32.35 0 0 0 0 29.19C89.71 376.41 197.07 448 320 448c26.91 0 52.87-4 77.89-10.46L346 397.39a144.13 144.13 0 0 1-26 2.61zm313.82 58.1l-110.55-85.44a331.25 331.25 0 0 0 81.25-102.07a32.35 32.35 0 0 0 0-29.19C550.29 135.59 442.93 64 320 64a308.15 308.15 0 0 0-147.32 37.7L45.46 3.37A16 16 0 0 0 23 6.18L3.37 31.45A16 16 0 0 0 6.18 53.9l588.36 454.73a16 16 0 0 0 22.46-2.81l19.64-25.27a16 16 0 0 0-2.82-22.45zm-183.72-142l-39.3-30.38A94.75 94.75 0 0 0 416 256a94.76 94.76 0 0 0-121.31-92.21A47.65 47.65 0 0 1 304 192a46.64 46.64 0 0 1-1.54 10l-73.61-56.89A142.31 142.31 0 0 1 320 112a143.92 143.92 0 0 1 144 144c0 21.63-5.29 41.79-13.9 60.11z"
+                            clip-rule="evenodd" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  
+
+
+
+                  <!-- <div>
+                    <label for="invitation code" class="block text-sm font-medium leading-6 text-gray-900">邀请码(选填)</label>
+                    <div class="mt-2">
+                      <input name="invitation" type="text"
+                        class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                    </div>
+                  </div> -->
+
+                  
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                      <input type="checkbox" required
+                        class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                      <label for="remember-me" class="ml-3 block text-sm leading-6 text-gray-700">我已阅读并同意<a href="#" class="text-indigo-600 font-semibold">用户使用协议</a></label>
+                    </div>
+                  </div>
+    
+                  <div>
+                    <button type="submit"
+                      class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign
+                      in</button>
+                  </div>
+                  
+                  <div>
+                    <div class="text-sm leading-6">
+                      已经是我们用户？<a href="/login" class="text-indigo-600 font-semibold">去登陆</a>
+                    </div>
+                  </div>
+                </form>
+
+                
+              
+            </div>
+
+          </div>
+        </div>
+    
+        
+      </div>
+
+    </main>
+    <!-- 主框架结束 -->
+  </div>
+
+
+  
+
+  
+
+
+
+  
+</div>
+{{template "footer.html" .}}
+<script src="/static/index.js"></script>
+<script src="/static/theme.js"></script>
+<script>
+  PetiteVue.createApp({
+    $delimiters: ['${', '}'],
+    isDark: theme(),
+    menuOpen: false,
+    langOpen: false,
+    isAcc: false,
+    openDark() {
+      this.isDark = !this.isDark;
+      if (this.isDark) {
+        document.documentElement.classList.add('dark'); //向html添加dark样式
+        localStorage.setItem('theme', 'dark');  //本地写入主题
+      } else {
+        document.documentElement.classList.remove('dark');  //删除dark样式
+        localStorage.setItem('theme', 'light');
+      }
+    },
+
+    //刷新触发
+    
+
+    // 通知逻辑开始
+    isErr:false, //错误提示显示变量
+    err: "", //错误内容变量
+    errtype: false, //通知类型变量,false为红色，true为绿色
+
+    adderr(err2) { //添加通知
+      this.err = err2;
+      this.isErr = true;
+      //定时关闭
+      setTimeout(() => {
+                this.isErr = false;
+              }, 3500);
+    },
+    //密码逻辑开始
+    showPassword: false, //明文显示密码图标状态变量
+    showPassword2:false, //明文显示密码2图标状态变量
+    password: "",  //密码区绑定变量
+    password2: "", //重复密码区绑定变量
+
+    //表单提交时运行事件
+    checkPasswords(event) {
+      if (this.password !== this.password2) {
+        event.preventDefault(); //阻止提交表单
+        this.errtype = false;
+        this.adderr("两次密码输入错误2");
+      }
+    },
+
+    onInit() {
+      console.log('加载完立即执行');
+      // 在页面加载完成后执行的逻辑
+    },
+        
+  }).mount();
+</script>
+{{template "bottom.html"}}

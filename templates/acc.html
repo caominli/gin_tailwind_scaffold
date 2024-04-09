@@ -1,0 +1,46 @@
+{{template "header.html" . }}
+<div v-html="msg" @vue:mounted="mounted"></div>
+<div class="bg-white dark:bg-slate-900 min-h-lvh">
+  <div class="mx-auto max-w-7xl">
+    <!-- 主要框架开始 -->
+    <main class="sm:px-12 py-6 space-x-3 text-gray-500 dark:text-slate-200">
+
+      这里是用户中心，你好，{{.user}}
+      
+
+    </main>
+    <!-- 主框架结束 -->
+  </div>
+  
+</div>
+{{template "footer.html" .}}
+<script src="/static/index.js"></script>
+<script src="/static/theme.js"></script>
+
+<script>
+  PetiteVue.createApp({
+    isDark: theme(),
+    menuOpen: false,
+    langOpen: false,
+    isAcc: false,
+    openDark() {
+      this.isDark = !this.isDark;
+      if (this.isDark) {
+        document.documentElement.classList.add('dark'); //向html添加dark样式
+        localStorage.setItem('theme', 'dark');  //本地写入主题
+      } else {
+        document.documentElement.classList.remove('dark');  //删除dark样式
+        localStorage.setItem('theme', 'light');
+      }
+    },
+    msg: null, //通知消息初始化
+    //初始化完成后立即执行，需要在任意元素中使用@vue:mounted="mounted"
+    mounted() {
+      {{if .msg}}
+      Message(this,"{{index .msg 0}}",{{index .msg 1}});
+      {{end}}
+    },
+  }).mount();
+
+</script>
+{{template "bottom.html"}}
