@@ -166,6 +166,9 @@ func Getcode(c *gin.Context) {
 			log.Print("验证码数据库创建失败：", result.Error)
 			return
 		}
+
+		//为邮箱发送验证码
+		go service.Sendmail(emailjson.Email,code)
 		//返回成功
 		c.JSON(200, gin.H{"msg": true})
 		return
@@ -173,7 +176,7 @@ func Getcode(c *gin.Context) {
 
 	// //给现在的时间加上2分钟
 	// newTime := user.Date.Add(2 * time.Minute)
-	log.Print("有这条数据开始更新")
+
 
 	//计算当前时间和对比时间的时间差
 	timeDiff := time.Since(user.Date)
@@ -197,6 +200,8 @@ func Getcode(c *gin.Context) {
 		log.Println("修改验证码失败：", result.Error)
 		return
 	}
+	//为邮箱发送验证码
+	go service.Sendmail(emailjson.Email,code)
 	//返回成功
 	c.JSON(200, gin.H{"msg": true})
 }

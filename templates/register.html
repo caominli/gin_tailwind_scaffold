@@ -24,7 +24,7 @@
             <div class="mt-6">
               <form method="POST" class="space-y-6" action="#" v-on:submit="getcode">
                 <div>
-                  <label for="email" class="block text-sm font-medium leading-6">Email address</label>
+                  <label for="email" class="block text-sm font-medium leading-6">邮箱地址</label>
                   <div class="mt-2">
                     <input v-model="emailText" name="email" type="email" autocomplete="email" required
                       class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 bg-transparent ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -53,7 +53,7 @@
                 <input v-model="emailText" name="email" type="email" required hidden>
 
                 <div>
-                  <label for="password" class="block text-sm font-medium leading-6">Password</label>
+                  <label for="password" class="block text-sm font-medium leading-6">密码</label>
                   <div class="relative mt-2 rounded-md z-0">
                     <input :type="showPassword ? 'text' : 'password'" v-model="password" required name="password"
                       class="block w-full rounded-md border-0 py-1.5 bg-transparent ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
