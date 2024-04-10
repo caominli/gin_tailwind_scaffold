@@ -26,6 +26,7 @@ routers
 services
 - text.go 文本处理相关，密码加密，验证码，转大写
 - jwt.go JWT的实现
+- email.go 邮件发送实现
 
 templates 模板文件
 
@@ -34,7 +35,14 @@ static 静态文件，js css
 
 
 ### 编译
+
+在生产环境需要修改 models>init.go的Domain和Port注释
+router.go 中正式模式反注释
 `$env:GOOS='linux'; $env:GOARCH='amd64'; go build -o btcmai`
+
+
+Linux正式编译
+`$env:GOOS='linux'; $env:GOARCH='amd64'; go build -ldflags="-s -w" -o btcmai`
 
 换回win
 `$env:GOOS='windows'; $env:GOARCH='amd64';`

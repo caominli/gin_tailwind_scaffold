@@ -12,6 +12,7 @@ import (
 // }
 
 func Router() *gin.Engine {
+	// gin.SetMode(gin.ReleaseMode) //正式版模式
 	r := gin.Default() //初始化gin
 
 	r.LoadHTMLGlob("templates/*")   //加载html模板全局，指定templates目录下的所有文件
