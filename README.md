@@ -14,7 +14,7 @@
 ## 结构
 
 controllers
-- controller 视图控制器
+- view 视图控制器
 - user.go 用户的视图控制器
 models
 - init.go 数据库初始化
@@ -23,7 +23,7 @@ models
 routers
 - router.go 路由和gin初始化
 
-services
+commons 公共封装组件
 - text.go 文本处理相关，密码加密，验证码，转大写
 - jwt.go JWT的实现
 - email.go 邮件发送实现
@@ -36,7 +36,7 @@ static 静态文件，js css
 
 ### 编译
 
-在生产环境需要修改 models>init.go的Domain和Port注释
+在生产环境需要修改 配置文件的主机地址+端口
 router.go 中正式模式反注释
 `$env:GOOS='linux'; $env:GOARCH='amd64'; go build -o btcmai`
 
