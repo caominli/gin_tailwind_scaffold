@@ -1,22 +1,24 @@
 package common
 
 import (
+	config "ginTailwindcssBase/config"
 	model "ginTailwindcssBase/models"
-	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 	"log"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 // 定义 JWT 签名密钥
-var jwtKey = []byte("s1D5e+sUc8eF+2rNexP7IM7B6Nt6_kr7L3e4y")
+var jwtKey = []byte(config.Config.JwtKey)
 
 // 定义 JWT 签发函数
 func GenerateJWT(email string) (string, error) {
 	// 创建 JWT Claims 对象
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		//设置超时时间15天
-		"exp":      time.Now().Add(time.Hour * 360).Unix(),
+		"exp":       time.Now().Add(time.Hour * 360).Unix(),
 		"useremail": email, //这是存入的用户名
 	})
 	// 生成 JWT Token
@@ -69,7 +71,7 @@ func AuthUser(c *gin.Context) {
 	c.Next()
 }
 
-//jwt中间件，检查是否登录和返回用邮箱,返回str,没有返回空字符串
+// jwt中间件，检查是否登录和返回用邮箱,返回str,没有返回空字符串
 func IsLogin(c *gin.Context) {
 	//获取cookie中的token字段
 	tokenString, _ := c.Cookie("token")
