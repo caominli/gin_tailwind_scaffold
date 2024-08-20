@@ -1,4 +1,4 @@
-package service
+package common
 
 import (
 	"golang.org/x/crypto/bcrypt" //密码加密解密

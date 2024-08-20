@@ -3,6 +3,7 @@ package models //定义在models包下
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10" //导入自定义验证器
+	config "ginTailwindcssBase/config"
 	// "log"
 	"reflect" //验证器定义错误需要
 	"strings"
@@ -76,7 +77,7 @@ func ValidateCode(email string, code string) bool {
 func FlashSet(c *gin.Context, msg string, msgtype string) {
 	//创建消息,用冒号分开
 	value := msg + ":" + msgtype
-	c.SetCookie("msg", value, 40, "/", Domain, false, true)
+	c.SetCookie("msg", value, 40, "/", config.Config.Host, false, true)
 }
 
 // 读取闪现消息，返回包含两个值的数组，消息内容和类型

@@ -1,4 +1,4 @@
-module btcmai
+module ginTailwindcssBase
 
 go 1.21.1
 

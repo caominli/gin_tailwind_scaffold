@@ -1,8 +1,9 @@
-package controller
+package view
 
 import (
-	model "btcmai/models"
-	service "btcmai/services"
+	model "ginTailwindcssBase/models"
+	common "ginTailwindcssBase/commons"
+	config "ginTailwindcssBase/config"
 	"gorm.io/gorm"
 	"log"
 	"time"
@@ -40,7 +41,7 @@ func Register(c *gin.Context) {
 			return
 		}
 
-		code := service.Da_xie(form.Code) //验证码转大写
+		code := common.Da_xie(form.Code) //验证码转大写
 		// 核验验证码
 		if !model.ValidateCode(form.Email, code) { //核验验证码
 			//创建消息
@@ -51,7 +52,7 @@ func Register(c *gin.Context) {
 		}
 
 		//开始写入数据库逻辑
-		err = model.DB.Create(&model.User{Email: form.Email, Password: service.SetPassword(form.Password)}).Error
+		err = model.DB.Create(&model.User{Email: form.Email, Password: common.SetPassword(form.Password)}).Error
 
 		if err != nil {
 			c.JSON(400, gin.H{"msg": "Database error, please try again later or report this issue to our customer support team"})
@@ -100,7 +101,7 @@ func Login(c *gin.Context) {
 			return
 		}
 		// 验证密码如果没通过
-		if ok := service.Cpassword(user.Password, form.Password); !ok {
+		if ok := common.Cpassword(user.Password, form.Password); !ok {
 			//创建消息
 			model.FlashSet(c, "账户或密码错误", "1")
 			//跳转页面
@@ -110,13 +111,13 @@ func Login(c *gin.Context) {
 
 		//密码正确后的逻辑
 		//调用jwt签发函数并保存到cookie，也可以直接返回json的token让客户端自己处理
-		tokenString, err := service.GenerateJWT(form.Email)
+		tokenString, err := common.GenerateJWT(form.Email)
 		if err != nil {
 			c.JSON(500, gin.H{"error": "token generation failed"})
 			return
 		}
 		//设置cookie有效期15天
-		c.SetCookie("token", tokenString, 1296000, "/", model.Domain, false, true)
+		c.SetCookie("token", tokenString, 1296000, "/", config.Config.Host, false, true)
 		//跳转到后台路由
 		model.FlashSet(c, "登陆成功", "3")
 		c.Redirect(302, "/")
@@ -157,7 +158,7 @@ func Getcode(c *gin.Context) {
 		}
 		log.Print("没有这条数据开始创建")
 		//如果未查询到数据则创建它
-		code := service.Captcha(6) //获得验证码
+		code := common.Captcha(6) //获得验证码
 
 		//写入数据
 		result = model.DB.Create(&model.Captcha{Email: emailjson.Email, Code: code, Date: time.Now()})
@@ -168,7 +169,7 @@ func Getcode(c *gin.Context) {
 		}
 
 		//为邮箱发送验证码
-		go service.Sendmail(emailjson.Email,code)
+		go common.Sendmail(emailjson.Email,code)
 		//返回成功
 		c.JSON(200, gin.H{"msg": true})
 		return
@@ -189,7 +190,7 @@ func Getcode(c *gin.Context) {
 	}
 
 	//超过2分钟则更新验证码和时间
-	code := service.Captcha(6) //获得验证码
+	code := common.Captcha(6) //获得验证码
 
 	user.Code = code
 	user.Date = time.Now()
@@ -201,7 +202,7 @@ func Getcode(c *gin.Context) {
 		return
 	}
 	//为邮箱发送验证码
-	go service.Sendmail(emailjson.Email,code)
+	go common.Sendmail(emailjson.Email,code)
 	//返回成功
 	c.JSON(200, gin.H{"msg": true})
 }
@@ -233,7 +234,7 @@ func ChangePassword(c *gin.Context) {
 			return
 		}
 
-		code := service.Da_xie(form.Code) //验证码转大写
+		code := common.Da_xie(form.Code) //验证码转大写
 		// 核验验证码
 		if !model.ValidateCode(form.Email, code) { //核验验证码
 			//创建消息
@@ -243,7 +244,7 @@ func ChangePassword(c *gin.Context) {
 		}
 
 		//更新数据库逻辑
-		user.Password = service.SetPassword(form.Password)
+		user.Password = common.SetPassword(form.Password)
 		if model.DB.Save(&user).Error != nil {
 			//创建消息
 			model.FlashSet(c, "数据库遇到错误请稍后再试", "1")

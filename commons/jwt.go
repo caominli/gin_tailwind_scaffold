@@ -1,7 +1,7 @@
-package service
+package common
 
 import (
-	model "btcmai/models"
+	model "ginTailwindcssBase/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"log"
